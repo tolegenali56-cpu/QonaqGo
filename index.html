@@ -1,4 +1,554 @@
-<h2 data-i18n="aboutTitle">О QonaqGo</h2>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QonaqGo Travel Marketplace</title>
+  <style>
+    :root {
+      --ink: #15201d;
+      --muted: #64736f;
+      --line: #d8e1de;
+      --paper: #f6f8f7;
+      --brand: #0f8b6f;
+      --brand-dark: #12352f;
+      --accent: #d43f3a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-inner {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .logo {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--brand-dark);
+      color: white;
+      font-weight: 900;
+    }
+
+    nav {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      gap: 12px;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    nav a {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      border-radius: 6px;
+      padding: 0 7px;
+    }
+
+    nav a:hover { background: rgba(15, 139, 111, .09); }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: white;
+    }
+
+    .lang-switch button {
+      min-height: 38px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: transparent;
+      padding: 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .lang-switch button:last-child { border-right: 0; }
+    .lang-switch button.active { background: var(--brand-dark); color: white; }
+
+    .btn {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn.primary { background: var(--brand); color: white; }
+    .btn.dark { background: var(--brand-dark); color: white; }
+    .btn.ghost { border-color: var(--line); background: white; color: var(--ink); }
+
+    .hero {
+      min-height: 78vh;
+      background:
+        linear-gradient(90deg, rgba(11, 28, 24, .84), rgba(11, 28, 24, .24)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2200&auto=format&fit=crop");
+      background-position: center;
+      background-size: cover;
+      color: white;
+    }
+
+    .hero-inner {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 92px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.12);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 20px 0 0;
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 22px 0 0;
+      color: rgba(255,255,255,.86);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .search {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr .8fr auto;
+      gap: 10px;
+      max-width: 990px;
+      margin-top: 34px;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 46px;
+      border: 1px solid rgba(255,255,255,.36);
+      border-radius: 6px;
+      background: rgba(9, 20, 17, .34);
+      padding: 10px 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: white;
+      font: inherit;
+    }
+
+    .field select option { color: var(--ink); }
+    .field input::placeholder { color: rgba(255,255,255,.76); }
+    .field input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .85; }
+
+    .section {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 16px 40px rgba(20, 48, 42, .08);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .card-body { padding: 16px; }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .card h3 {
+      margin: 6px 0 0;
+      font-size: 21px;
+      line-height: 1.2;
+    }
+
+    .desc {
+      min-height: 44px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .rating { font-weight: 900; }
+
+    .price {
+      text-align: right;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .price span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      padding: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 40px;
+      border-top: 1px solid var(--line);
+      background: white;
+    }
+
+    .footer-inner {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 28px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1120px) {
+      nav { display: none; }
+    }
+
+    @media (max-width: 900px) {
+      .header-inner,
+      .actions,
+      .footer-inner {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .search,
+      .cards,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="#">
+        <span class="logo">Q</span>
+        <span>QonaqGo</span>
+      </a>
+
+      <nav>
+        <a data-i18n="home" href="#">Главная</a>
+        <a data-i18n="tours" href="#tours">Туры</a>
+        <a data-i18n="hotels" href="#hotels">Отели</a>
+        <a data-i18n="restaurants" href="#restaurants">Рестораны</a>
+        <a data-i18n="excursions" href="#tours">Экскурсии</a>
+        <a data-i18n="about" href="#about">О компании</a>
+        <a data-i18n="contacts" href="#contacts">Контакты</a>
+      </nav>
+
+      <div class="actions">
+        <div class="lang-switch" aria-label="Language switcher">
+          <button class="active" type="button" data-lang="ru">Рус</button>
+          <button type="button" data-lang="kk">Қаз</button>
+          <button type="button" data-lang="en">Eng</button>
+        </div>
+        <a class="btn ghost" data-i18n="account" href="#">Кабинет</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="eyebrow" data-i18n="eyebrow">Demo/MVP marketplace</span>
+        <h1 data-i18n="heroTitle">Путешествия по Казахстану</h1>
+        <p data-i18n="heroText">Отели, туры, рестораны, экскурсии и трансферы с демо-бронированием, оплатой, отзывами и кабинетами.</p>
+
+        <form class="search">
+          <label class="field">📍 <input data-i18n-placeholder="searchPlaceholder" placeholder="Город, отель или тур" /></label>
+          <label class="field">📅 <input type="date" /></label>
+          <label class="field">📅 <input type="date" /></label>
+          <label class="field">👤
+            <select>
+              <option data-guests="1">1 гость</option>
+              <option selected data-guests="2">2 гостя</option>
+              <option data-guests="3">3 гостя</option>
+              <option data-guests="4">4 гостя</option>
+              <option data-guests="5">5 гостей</option>
+              <option data-guests="6">6 гостей</option>
+            </select>
+          </label>
+          <button class="btn primary" type="submit" data-i18n="find">Найти</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="stats">
+        <div class="stat"><strong>100+</strong><span data-i18n="hotels">Отели</span></div>
+        <div class="stat"><strong>80+</strong><span data-i18n="tours">Туры</span></div>
+        <div class="stat"><strong>100+</strong><span data-i18n="restaurants">Рестораны</span></div>
+        <div class="stat"><strong>24/7</strong><span data-i18n="support">Поддержка</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="hotels">
+      <div class="section-head">
+        <h2 data-i18n="bestHotels">Лучшие отели</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <img alt="Rixos Almaty" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="hotelAlmaty">Отель • Алматы</div>
+            <h3>Rixos City Center Almaty</h3>
+            <p class="desc" data-i18n="hotelDesc">Комфортный отель для деловых поездок и отдыха в центре города.</p>
+            <div class="price-row"><span class="rating">★ 4.8</span><strong class="price">52 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="book">Забронировать</button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img alt="Astana hotel" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="hotelAstana">Отель • Астана</div>
+            <h3>Hilton Business Astana</h3>
+            <p class="desc" data-i18n="hotelDesc2">Современные номера, завтрак, Wi-Fi и удобная локация.</p>
+            <div class="price-row"><span class="rating">★ 4.7</span><strong class="price">48 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="book">Забронировать</button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img alt="Mountain hotel" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="hotelBorovoe">Отель • Боровое</div>
+            <h3>Garden Park Borovoe</h3>
+            <p class="desc" data-i18n="hotelDesc3">Природа, спокойный отдых и семейные маршруты рядом.</p>
+            <div class="price-row"><span class="rating">★ 4.6</span><strong class="price">39 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="book">Забронировать</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="restaurants">
+      <div class="section-head">
+        <h2 data-i18n="restaurantsTitle">Рестораны</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <img alt="Restaurant" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="restaurantAlmaty">Ресторан • Алматы</div>
+            <h3>Navat Terrace</h3>
+            <p class="desc" data-i18n="restaurantDesc">Казахская кухня, семейные залы и бронь столика.</p>
+            <div class="price-row"><span class="rating">★ 4.9</span><strong class="price"><span data-i18n="avgCheck">Средний чек</span>12 500 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="bookTable">Забронировать</button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img alt="Cafe" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="restaurantAstana">Ресторан • Астана</div>
+            <h3>Sandyq Gourmet</h3>
+            <p class="desc" data-i18n="restaurantDesc2">Национальные блюда, авторский чай и уютный интерьер.</p>
+            <div class="price-row"><span class="rating">★ 4.8</span><strong class="price"><span data-i18n="avgCheck">Средний чек</span>10 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="bookTable">Забронировать</button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img alt="Food" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="restaurantTurkestan">Ресторан • Туркестан</div>
+            <h3>Nomad Table</h3>
+            <p class="desc" data-i18n="restaurantDesc3">Местная кухня и удобное расположение для туристов.</p>
+            <div class="price-row"><span class="rating">★ 4.7</span><strong class="price"><span data-i18n="avgCheck">Средний чек</span>9 500 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="bookTable">Забронировать</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="tours">
+      <div class="section-head">
+        <h2 data-i18n="popularTours">Популярные туры</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <img alt="Charyn Canyon" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="tourMeta">Тур • Алматы</div>
+            <h3 data-i18n="tourTitle">Чарынский каньон</h3>
+            <p class="desc" data-i18n="tourDesc">Однодневный маршрут с гидом, трансфером и фото-остановками.</p>
+            <div class="price-row"><span class="rating">★ 4.8</span><strong class="price">28 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="book">Забронировать</button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img alt="Astana" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="tourMeta2">Тур • Астана</div>
+            <h3 data-i18n="tourTitle2">Астана и Байтерек</h3>
+            <p class="desc" data-i18n="tourDesc2">Городской тур по главным достопримечательностям столицы.</p>
+            <div class="price-row"><span class="rating">★ 4.7</span><strong class="price">24 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="book">Забронировать</button></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img alt="Turkestan" src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1200&auto=format&fit=crop" />
+          <div class="card-body">
+            <div class="meta" data-i18n="tourMeta3">Тур • Туркестан</div>
+            <h3 data-i18n="tourTitle3">Мавзолей Ясави</h3>
+            <p class="desc" data-i18n="tourDesc3">Исторический маршрут по культурному центру Казахстана.</p>
+            <div class="price-row"><span class="rating">★ 4.9</span><strong class="price">32 000 ₸</strong></div>
+            <div class="card-actions"><button class="btn ghost" data-i18n="details">Подробнее</button><button class="btn primary" data-i18n="book">Забронировать</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <h2 data-i18n="aboutTitle">О QonaqGo</h2>
       <p class="desc" data-i18n="aboutText">QonaqGo помогает туристам найти понятные варианты отдыха в Казахстане: жилье, туры, рестораны и экскурсии в одном месте.</p>
     </section>
   </main>
